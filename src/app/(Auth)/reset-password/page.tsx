@@ -1,15 +1,19 @@
 import { ResetPasswordAction } from "@/components/auth/auth-token-actions";
-import { Suspense } from "react";
+import { Suspense, use } from "react";
 
-export default async function ResetPasswordPage({
+function ResetPasswordContent({
   searchParams,
 }: PageProps<"/reset-password">) {
-  const { token } = await searchParams;
+  const { token } = use(searchParams);
+  return (
+    <ResetPasswordAction token={typeof token === "string" ? token : undefined} />
+  );
+}
+
+export default function ResetPasswordPage(props: PageProps<"/reset-password">) {
   return (
     <Suspense fallback={null}>
-      <ResetPasswordAction
-        token={typeof token === "string" ? token : undefined}
-      />
+      <ResetPasswordContent {...props} />
     </Suspense>
   );
 }
